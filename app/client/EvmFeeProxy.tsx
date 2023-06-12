@@ -7,7 +7,7 @@ import { Assets } from "@/libs/constants";
 import { useEvmFeeProxy, useMetaMask, useRootApi } from "@/libs/hooks";
 import { sendRootTx, signRootTx } from "@/libs/utils";
 
-import { Button, Input } from "./";
+import { Button, Input, JSONViewer } from "./";
 
 interface EvmData {
 	input?: string;
@@ -19,6 +19,7 @@ export const EvmFeeProxy = () => {
 	const { wallet } = useMetaMask();
 
 	const [error, setError] = useState<string>();
+	const [result, setResult] = useState<Record<string, unknown>>();
 	const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 	const [amount, setAmount] = useState<string>("1");
 	const [destination, setDestination] = useState<string>(
@@ -50,7 +51,7 @@ export const EvmFeeProxy = () => {
 			const tx = await sendRootTx(signedExtrinsic);
 
 			tx.on("txSucceeded", (result) => {
-				console.log("success", result);
+				setResult(result);
 				setIsSubmitting(false);
 			});
 
@@ -103,6 +104,12 @@ export const EvmFeeProxy = () => {
 				<div className="space-y-4 pt-6 text-center">
 					<h2 className="font-medium">Error submitting extrinsic</h2>
 					<p className="text-sm p-4">{error}</p>
+				</div>
+			)}
+
+			{result && (
+				<div className="p-4 border border-gray-200 rounded-md w-2/3 mx-auto">
+					<JSONViewer data={result} />
 				</div>
 			)}
 		</div>
