@@ -1,6 +1,7 @@
 import { type FC, Fragment, useCallback } from "react";
 
-import { useIsMounted, useMetaMask } from "../../libs/hooks";
+import { useIsMounted, useMetaMask } from "@/libs/hooks";
+
 import { Button } from "./";
 
 const ConnectWallet: FC = () => {
@@ -19,7 +20,7 @@ const ConnectWallet: FC = () => {
 	if (!isMounted) return <Button buttonClassName="" isLoading />;
 
 	return (
-		<Button buttonClassName="whitespace-nowrap text-sm" onClick={onButtonClick}>
+		<button className="whitespace-nowrap text-sm" onClick={onButtonClick}>
 			{!wallet?.isActive ? (
 				<Fragment>Connect Wallet</Fragment>
 			) : (
@@ -33,7 +34,7 @@ const ConnectWallet: FC = () => {
 					</span>
 				</Fragment>
 			)}
-		</Button>
+		</button>
 	);
 };
 

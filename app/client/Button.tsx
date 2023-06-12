@@ -21,7 +21,7 @@ export const Button: FC<ButtonProps> = ({
 			className={clsx(
 				buttonClassName,
 				isLoading && "loading",
-				"btn btn-outline rounded-none focus:outline-none",
+				"btn btn-outline rounded-sm focus:outline-none",
 				{
 					small: "w-[145px] px-[16px] py-[10px] mx-auto",
 					large: "w-full",

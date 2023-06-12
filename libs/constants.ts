@@ -1,3 +1,7 @@
+import { getAssetPrecompileAddress } from "@/libs/utils";
+
+import type { Asset } from "./types";
+
 export const RootNetwork = {
 	porcini: {
 		ChainName: "Porcini",
@@ -31,3 +35,26 @@ export const RootNetwork = {
 		GraphQlEndpoint: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT ?? "",
 	},
 }[process.env.NEXT_PUBLIC_ROOT_NETWORK ?? "porcini"];
+
+export const Assets: Record<string, Asset> = {
+	XRP: {
+		assetId: 2,
+		address: getAssetPrecompileAddress(2),
+		decimals: 6,
+	},
+	ROOT: {
+		assetId: 1,
+		address: getAssetPrecompileAddress(1),
+		decimals: 6,
+	},
+	ASTO: {
+		assetId: 17508,
+		address: getAssetPrecompileAddress(17508),
+		decimals: 18,
+	},
+	SYLO: {
+		assetId: 3172,
+		address: getAssetPrecompileAddress(3172),
+		decimals: 18,
+	},
+};
