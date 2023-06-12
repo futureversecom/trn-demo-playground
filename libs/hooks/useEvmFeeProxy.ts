@@ -16,7 +16,7 @@ export function useEvmFeeProxy(props: EvmFeeProxyProps) {
 	const { asset } = props;
 	const rootApi = useRootApi();
 	const evmCall = useEvmCall(props);
-	const maxPayment = useMaxPayment(asset?.assetId);
+	const maxPayment = useMaxPayment(asset.assetId);
 
 	return useMemo(() => {
 		if (!rootApi || !maxPayment || !evmCall || !asset) return null;

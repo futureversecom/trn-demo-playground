@@ -1,7 +1,6 @@
 import ERC20 from "@openzeppelin/contracts/build/contracts/ERC20.json";
 import { Contract, utils as ethers } from "ethers";
-import { parse } from "path";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { type FC, useCallback, useEffect, useMemo, useState } from "react";
 
 import { Assets } from "@/libs/constants";
 import { useEvmFeeProxy, useMetaMask, useRootApi } from "@/libs/hooks";
@@ -14,7 +13,7 @@ interface EvmData {
 	gasLimit?: string;
 }
 
-export const EvmFeeProxy = () => {
+export const EvmFeeProxy: FC = () => {
 	const rootApi = useRootApi();
 	const { wallet } = useMetaMask();
 
@@ -98,7 +97,7 @@ export const EvmFeeProxy = () => {
 				</Button>
 			</div>
 
-			{error && <div className="w-[98%] border border-gray-300 mx-auto" />}
+			{(error || result) && <div className="w-[98%] border border-gray-300 mx-auto" />}
 
 			{error && (
 				<div className="space-y-4 pt-6 text-center">
@@ -116,7 +115,7 @@ export const EvmFeeProxy = () => {
 	);
 };
 
-const useEvmData = (amount: string, destination: string) => {
+function useEvmData(amount: string, destination: string) {
 	const { provider } = useMetaMask();
 
 	const erc20Contract = useMemo(() => {
@@ -143,4 +142,4 @@ const useEvmData = (amount: string, destination: string) => {
 	}, [fetchEvmData]);
 
 	return { input, gasLimit };
-};
+}
