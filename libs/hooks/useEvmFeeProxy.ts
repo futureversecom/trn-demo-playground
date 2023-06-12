@@ -21,11 +21,7 @@ export function useEvmFeeProxy(props: EvmFeeProxyProps) {
 	return useMemo(() => {
 		if (!rootApi || !maxPayment || !evmCall || !asset) return null;
 
-		return rootApi.tx.feeProxy.callWithFeePreferences(
-			asset.assetId,
-			maxPayment,
-			rootApi.createType("Call", evmCall)
-		);
+		return rootApi.tx.feeProxy.callWithFeePreferences(asset.assetId, maxPayment, evmCall);
 	}, [rootApi, maxPayment, evmCall, asset]);
 }
 
@@ -73,11 +69,11 @@ function useEvmCall({ asset, input, gasLimit }: EvmFeeProxyProps) {
 			rootApi.tx.evm.call(
 				wallet.account, // sender
 				asset.address, // target
-				input,
+				input, // input
 				0, // value
 				gasLimit, // gasLimit,
 				lastBaseFeePerGas!.toString(), // maxFeePerGas
-				maxPriorityFeePerGas!.toString(),
+				maxPriorityFeePerGas!.toString(), // maxPriorityFeePerGas
 				null, // nonce
 				null // accessList
 			)

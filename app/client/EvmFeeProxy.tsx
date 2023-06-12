@@ -2,7 +2,7 @@ import ERC20 from "@openzeppelin/contracts/build/contracts/ERC20.json";
 import { Contract, utils as ethers } from "ethers";
 import { type FC, useCallback, useEffect, useMemo, useState } from "react";
 
-import { Assets } from "@/libs/constants";
+import { Assets, RootNetwork } from "@/libs/constants";
 import { useEvmFeeProxy, useMetaMask, useRootApi } from "@/libs/hooks";
 import { sendRootTx, signRootTx } from "@/libs/utils";
 
@@ -13,12 +13,17 @@ interface EvmData {
 	gasLimit?: string;
 }
 
+interface Result {
+	extrinsicId: string;
+	events: Record<string, unknown>;
+}
+
 export const EvmFeeProxy: FC = () => {
 	const rootApi = useRootApi();
 	const { wallet } = useMetaMask();
 
 	const [error, setError] = useState<string>();
-	const [result, setResult] = useState<Record<string, unknown>>();
+	const [result, setResult] = useState<Result>();
 	const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
 	const [amount, setAmount] = useState<string>("1");
@@ -64,12 +69,15 @@ export const EvmFeeProxy: FC = () => {
 				} = evmLogEvent?.toJSON() as { data: [Record<string, unknown>] };
 
 				setResult({
-					"FeeProxy.CallWithFeePreferences": {
-						who,
-						maxPayment,
-						paymentAsset,
+					extrinsicId: tx.extrinsicId!,
+					events: {
+						"FeeProxy.CallWithFeePreferences": {
+							who,
+							maxPayment,
+							paymentAsset,
+						},
+						"EVM.Log": log,
 					},
-					"EVM.Log": log,
 				});
 			});
 
@@ -129,7 +137,13 @@ export const EvmFeeProxy: FC = () => {
 				<div className="space-y-4">
 					<h2 className="font-medium text-center">Success Events</h2>
 					<div className="p-4 border border-gray-200 rounded-md w-2/3 mx-auto ">
-						<JSONViewer data={result} />
+						<JSONViewer data={result.events} />
+					</div>
+
+					<div className="py-6 space-x-4 flex justify-center">
+						<a href={`${RootNetwork!.ExplorerUrl}/extrinsic/${result.extrinsicId}`} target="_blank">
+							<Button>View on Root Block Explorer</Button>
+						</a>
 					</div>
 				</div>
 			)}
