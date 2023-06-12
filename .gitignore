@@ -46,6 +46,7 @@ dist
 # app
 node_modules
 .env
+.next
 .secrets
 coverage
 coverage.json
