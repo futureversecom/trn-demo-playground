@@ -67,7 +67,6 @@ function useEvmCall({ asset, input, gasLimit }: EvmFeeProxyProps) {
 	const getEvmCall = useCallback(async () => {
 		if (!rootApi || !wallet?.account || !provider) return;
 
-		const nonce = await provider.getTransactionCount(wallet.account);
 		const { lastBaseFeePerGas, maxPriorityFeePerGas } = await provider.getFeeData();
 
 		setEvmCall(
@@ -79,8 +78,8 @@ function useEvmCall({ asset, input, gasLimit }: EvmFeeProxyProps) {
 				gasLimit, // gasLimit,
 				lastBaseFeePerGas!.toString(), // maxFeePerGas
 				maxPriorityFeePerGas!.toString(),
-				nonce,
-				[] // accessList
+				null, // nonce
+				null // accessList
 			)
 		);
 	}, [rootApi, input, asset, gasLimit, wallet, provider]);

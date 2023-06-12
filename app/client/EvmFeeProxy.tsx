@@ -20,12 +20,13 @@ export const EvmFeeProxy: FC = () => {
 	const [error, setError] = useState<string>();
 	const [result, setResult] = useState<Record<string, unknown>>();
 	const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
 	const [amount, setAmount] = useState<string>("1");
 	const [destination, setDestination] = useState<string>(
 		"0x000000000000000000000000000000000000dEaD"
 	);
-	const { input, gasLimit } = useEvmData(amount, destination);
 
+	const { input, gasLimit } = useEvmData(amount, destination);
 	const evmFeeProxyExtrinsic = useEvmFeeProxy({
 		input,
 		gasLimit,
@@ -50,8 +51,26 @@ export const EvmFeeProxy: FC = () => {
 			const tx = await sendRootTx(signedExtrinsic);
 
 			tx.on("txSucceeded", (result) => {
-				setResult(result);
 				setIsSubmitting(false);
+
+				const feeProxyEvent = tx.findEvent(result, "feeProxy", "CallWithFeePreferences");
+				const {
+					data: [who, maxPayment, paymentAsset],
+				} = feeProxyEvent?.toJSON() as { data: [string, number, string] };
+
+				const evmLogEvent = tx.findEvent(result, "evm", "Log");
+				const {
+					data: [log],
+				} = evmLogEvent?.toJSON() as { data: [Record<string, unknown>] };
+
+				setResult({
+					"FeeProxy.CallWithFeePreferences": {
+						who,
+						maxPayment,
+						paymentAsset,
+					},
+					"EVM.Log": log,
+				});
 			});
 
 			tx.on("txFailed", (result) => {
@@ -68,8 +87,8 @@ export const EvmFeeProxy: FC = () => {
 	}, [rootApi, evmFeeProxyExtrinsic, wallet]);
 
 	return (
-		<div className="space-y-6">
-			<div className="max-w-xl mx-auto">
+		<div className="space-y-6 py-10 w-1/2">
+			<div className="mx-auto">
 				<Input id="asset" label="Asset" value="SYLO" />
 
 				<Input
@@ -97,18 +116,21 @@ export const EvmFeeProxy: FC = () => {
 				</Button>
 			</div>
 
-			{(error || result) && <div className="w-[98%] border border-gray-300 mx-auto" />}
+			{(error || result) && <div className="w-[80%] border border-gray-300 mx-auto" />}
 
 			{error && (
-				<div className="space-y-4 pt-6 text-center">
+				<div className="space-y-4 text-center">
 					<h2 className="font-medium">Error submitting extrinsic</h2>
 					<p className="text-sm p-4">{error}</p>
 				</div>
 			)}
 
 			{result && (
-				<div className="p-4 border border-gray-200 rounded-md w-2/3 mx-auto">
-					<JSONViewer data={result} />
+				<div className="space-y-4">
+					<h2 className="font-medium text-center">Success Events</h2>
+					<div className="p-4 border border-gray-200 rounded-md w-2/3 mx-auto ">
+						<JSONViewer data={result} />
+					</div>
 				</div>
 			)}
 		</div>
@@ -121,7 +143,7 @@ function useEvmData(amount: string, destination: string) {
 	const erc20Contract = useMemo(() => {
 		if (!provider) return undefined;
 
-		return new Contract(Assets.SYLO.address, ERC20.abi, provider?.getSigner() ?? provider);
+		return new Contract(Assets.SYLO.address, ERC20.abi, provider.getSigner());
 	}, [provider]);
 
 	const [{ input, gasLimit }, setEvmData] = useState<EvmData>({});
