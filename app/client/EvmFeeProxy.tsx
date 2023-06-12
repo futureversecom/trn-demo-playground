@@ -91,7 +91,7 @@ export const EvmFeeProxy: FC = () => {
 					variant="small"
 					isLoading={isSubmitting}
 					onClick={submitExtrinsic}
-					disabled={!wallet?.account}
+					disabled={!wallet?.account || isSubmitting}
 				>
 					Submit
 				</Button>

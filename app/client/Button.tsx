@@ -20,7 +20,6 @@ export const Button: FC<ButtonProps> = ({
 			type={type}
 			className={clsx(
 				buttonClassName,
-				isLoading && "loading",
 				"btn btn-outline rounded-sm focus:outline-none",
 				{
 					small: "w-[145px] px-[16px] py-[10px] mx-auto",
@@ -29,6 +28,7 @@ export const Button: FC<ButtonProps> = ({
 			)}
 			{...props}
 		>
+			{isLoading && <span className="loading loading-spinner loading-xs"></span>}
 			{children}
 		</button>
 	);

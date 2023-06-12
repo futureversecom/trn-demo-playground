@@ -19,7 +19,7 @@ export default function Header() {
 				<div className="flex items-center w-full max-w-xl p-2"></div>
 				<ul className="flex items-center">
 					<li>
-						{wallet?.account && (
+						{wallet?.account && wallet?.isActive && (
 							<div className="text-sm">
 								{wallet.account.slice(0, 6).concat("...").concat(wallet.account.slice(-4))}
 							</div>
