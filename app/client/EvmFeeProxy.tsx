@@ -1,5 +1,6 @@
 import ERC20 from "@openzeppelin/contracts/build/contracts/ERC20.json";
 import { Contract, utils as ethers } from "ethers";
+import { parse } from "path";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { Assets } from "@/libs/constants";
@@ -31,7 +32,7 @@ export const EvmFeeProxy = () => {
 		asset: Assets.SYLO,
 	});
 
-	const signAndSendExtrinsic = useCallback(async () => {
+	const submitExtrinsic = useCallback(async () => {
 		if (!rootApi || !evmFeeProxyExtrinsic || !wallet?.account || !wallet?.connector?.provider)
 			return;
 
@@ -54,12 +55,13 @@ export const EvmFeeProxy = () => {
 			});
 
 			tx.on("txFailed", (result) => {
-				throw new Error(tx.decodeError(result) ?? "unknown");
+				setIsSubmitting(false);
+				setError(tx.decodeError(result) ?? "unknown");
 			});
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (err: any) {
 			setIsSubmitting(false);
-			if (err?.code === -32603) return;
+			if (err?.message?.includes("User denied message signature")) return;
 
 			setError(err?.message ?? err);
 		}
@@ -68,6 +70,8 @@ export const EvmFeeProxy = () => {
 	return (
 		<div className="space-y-6">
 			<div className="max-w-xl mx-auto">
+				<Input id="asset" label="Asset" value="SYLO" />
+
 				<Input
 					id="amount"
 					label="Amount"
@@ -83,8 +87,13 @@ export const EvmFeeProxy = () => {
 			</div>
 
 			<div className="flex justify-center">
-				<Button onClick={signAndSendExtrinsic} variant="small" isLoading={isSubmitting}>
-					Send
+				<Button
+					variant="small"
+					isLoading={isSubmitting}
+					onClick={submitExtrinsic}
+					disabled={!wallet?.account}
+				>
+					Submit
 				</Button>
 			</div>
 
@@ -92,7 +101,7 @@ export const EvmFeeProxy = () => {
 
 			{error && (
 				<div className="space-y-4 pt-6 text-center">
-					<h2 className="font-medium">Something went wrong</h2>
+					<h2 className="font-medium">Error submitting extrinsic</h2>
 					<p className="text-sm p-4">{error}</p>
 				</div>
 			)}
@@ -106,7 +115,7 @@ const useEvmData = (amount: string, destination: string) => {
 	const erc20Contract = useMemo(() => {
 		if (!provider) return undefined;
 
-		return new Contract(Assets.SYLO.address, ERC20.abi, provider.getSigner() ?? provider);
+		return new Contract(Assets.SYLO.address, ERC20.abi, provider?.getSigner() ?? provider);
 	}, [provider]);
 
 	const [{ input, gasLimit }, setEvmData] = useState<EvmData>({});

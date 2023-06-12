@@ -2,8 +2,6 @@ import { type FC, Fragment, useCallback } from "react";
 
 import { useIsMounted, useMetaMask } from "@/libs/hooks";
 
-import { Button } from "./";
-
 const ConnectWallet: FC = () => {
 	const isMounted = useIsMounted();
 	const { wallet, connectWallet, disconnectWallet } = useMetaMask();
@@ -17,7 +15,7 @@ const ConnectWallet: FC = () => {
 	}, [wallet?.isActive, connectWallet]);
 
 	// Prevent React hydration error from wallet autoConnect
-	if (!isMounted) return <Button buttonClassName="" isLoading />;
+	if (!isMounted) return;
 
 	return (
 		<button className="whitespace-nowrap text-sm" onClick={onButtonClick}>
