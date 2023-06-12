@@ -1,7 +1,8 @@
 import { PropsWithChildren } from "react";
 
-import { Gilroy } from "../libs/assets/fonts";
-import "../styles/globals.css";
+import { Gilroy } from "@/libs/assets/fonts";
+import "@/libs/globals.css";
+
 import { Providers } from "./client";
 
 export const metadata = {
