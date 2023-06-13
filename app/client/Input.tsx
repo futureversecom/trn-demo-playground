@@ -1,15 +1,11 @@
-import type { ChangeEvent, FC } from "react";
+import type { FC, InputHTMLAttributes } from "react";
 
-interface InputProps {
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	id: string;
 	label: string;
-	value: string;
-	onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
-	disabled?: boolean;
-	placeholder?: string;
 }
 
-export const Input: FC<InputProps> = ({ label, id, value, onChange, disabled, placeholder }) => {
+export const Input: FC<InputProps> = ({ id, label, onChange, ...props }) => {
 	return (
 		<div className="mt-2 max-w-xl text-sm text-gray-500 mx-auto">
 			<div>
@@ -18,12 +14,14 @@ export const Input: FC<InputProps> = ({ label, id, value, onChange, disabled, pl
 				</label>
 				<div className="mt-1">
 					<input
-						id={id}
-						value={value}
-						onChange={onChange}
-						disabled={disabled}
-						placeholder={placeholder}
+						onChange={
+							onChange ??
+							(() => {
+								/* no-op */
+							})
+						}
 						className="block w-full appearance-none rounded-sm border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+						{...props}
 					/>
 				</div>
 			</div>
