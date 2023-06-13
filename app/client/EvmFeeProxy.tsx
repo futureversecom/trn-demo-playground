@@ -61,7 +61,7 @@ export const EvmFeeProxy: FC = () => {
 
 				const feeProxyEvent = tx.findEvent(result, "feeProxy", "CallWithFeePreferences");
 				const {
-					data: [who, maxPayment, paymentAsset],
+					data: [who, paymentAsset, maxPayment],
 				} = feeProxyEvent?.toJSON() as { data: [string, number, string] };
 
 				const evmLogEvent = tx.findEvent(result, "evm", "Log");
@@ -74,7 +74,7 @@ export const EvmFeeProxy: FC = () => {
 					events: {
 						"FeeProxy.CallWithFeePreferences": {
 							who,
-							maxPayment,
+							maxPayment: BigInt(maxPayment).toString(),
 							paymentAsset,
 						},
 						"EVM.Log": log,
