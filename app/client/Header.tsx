@@ -1,5 +1,3 @@
-"use client";
-
 import { useMetaMask } from "@/libs/hooks";
 
 /* eslint-disable @next/next/no-img-element */

@@ -1,5 +1,3 @@
-"use client";
-
 import { useDemo } from "@/libs/hooks";
 
 import { EvmFeeProxy } from "./";
