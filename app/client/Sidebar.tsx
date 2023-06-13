@@ -1,4 +1,5 @@
-import { Demos, useDemo } from "@/libs/hooks";
+import { Demos } from "@/libs/constants";
+import { useDemo } from "@/libs/hooks";
 
 export default function Sidebar() {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars

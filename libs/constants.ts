@@ -1,6 +1,8 @@
 import { getAssetPrecompileAddress } from "@/libs/utils";
 
-import type { Asset } from "./types";
+import type { Asset, Demo } from "./types";
+
+export const Demos: Array<Demo> = ["EvmFeeProxy"];
 
 export const RootNetwork = {
 	porcini: {

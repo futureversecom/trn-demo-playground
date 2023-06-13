@@ -1,7 +1,7 @@
 import { atom, useAtom } from "jotai";
 
-type Demo = "EvmFeeProxy";
-export const Demos: Array<Demo> = ["EvmFeeProxy"];
+import { Demos } from "@/libs/constants";
+import type { Demo } from "@/libs/types";
 
 const demoAtom = atom<Demo>(Demos[0]);
 
