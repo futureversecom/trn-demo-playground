@@ -2,9 +2,8 @@ import { utils as ethers } from "ethers";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { Assets } from "@/libs/constants";
+import { useMetaMask, useRootApi } from "@/libs/hooks";
 import type { Asset, Extrinsic } from "@/libs/types";
-
-import { useMetaMask, useRootApi } from "./";
 
 interface EvmFeeProxyProps {
 	asset: Asset;

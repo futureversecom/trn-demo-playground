@@ -2,12 +2,13 @@ import ERC20 from "@openzeppelin/contracts/build/contracts/ERC20.json";
 import { Contract, utils as ethers } from "ethers";
 import { type FC, useCallback, useEffect, useMemo, useState } from "react";
 
+import { Button, Input, JSONViewer } from "@/app/client";
 import { DemoWrapper } from "@/app/server";
 import { Assets, RootNetwork } from "@/libs/constants";
-import { useEvmFeeProxy, useMetaMask, useRootApi } from "@/libs/hooks";
+import { useMetaMask, useRootApi } from "@/libs/hooks";
 import { sendRootTx, signRootTx } from "@/libs/utils";
 
-import { Button, Input, JSONViewer } from "./";
+import { useEvmFeeProxy } from "./useEvmFeeProxy";
 
 interface EvmData {
 	input?: string;

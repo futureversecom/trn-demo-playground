@@ -2,7 +2,6 @@
 
 export * from "./Button";
 export * from "./ConnectWallet";
-export * from "./EvmFeeProxy";
 export * from "./Header";
 export * from "./Input";
 export * from "./JSONViewer";
