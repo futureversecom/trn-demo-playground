@@ -2,7 +2,7 @@ import { type FC, Fragment, useCallback } from "react";
 
 import { useIsMounted, useMetaMask } from "@/libs/hooks";
 
-const ConnectWallet: FC = () => {
+export const ConnectWallet: FC = () => {
 	const isMounted = useIsMounted();
 	const { wallet, connectWallet, disconnectWallet } = useMetaMask();
 
@@ -35,5 +35,3 @@ const ConnectWallet: FC = () => {
 		</button>
 	);
 };
-
-export default ConnectWallet;

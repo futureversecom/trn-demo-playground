@@ -1,7 +1,9 @@
+import type { FC } from "react";
+
 import { Demos } from "@/libs/constants";
 import { useDemo } from "@/libs/hooks";
 
-export default function Sidebar() {
+export const Sidebar: FC = () => {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [_, setDemo] = useDemo();
 
@@ -44,4 +46,4 @@ export default function Sidebar() {
 			</div>
 		</div>
 	);
-}
+};

@@ -1,8 +1,10 @@
+import type { FC } from "react";
+
 import { useIsMounted, useMetaMask } from "@/libs/hooks";
 
-import ConnectWallet from "./ConnectWallet";
+import { ConnectWallet } from "./";
 
-export default function Header() {
+export const Header: FC = () => {
 	const { wallet } = useMetaMask();
 	const isMounted = useIsMounted();
 
@@ -39,4 +41,4 @@ export default function Header() {
 			</div>
 		</div>
 	);
-}
+};
