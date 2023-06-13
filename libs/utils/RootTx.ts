@@ -1,10 +1,6 @@
-import type { u32 } from "@polkadot/types/primitive";
-import type { ISubmittableResult } from "@polkadot/types/types";
 import Emittery from "emittery";
 
-interface Result extends ISubmittableResult {
-	blockNumber: u32;
-}
+import type { Result } from "@/libs/types";
 
 export class RootTx extends Emittery {
 	hash?: string;
