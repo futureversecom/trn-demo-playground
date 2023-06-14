@@ -1,8 +1,7 @@
 import type { FC } from "react";
 
+import { EvmFeeProxy } from "@/libs/demos";
 import { useDemo } from "@/libs/hooks";
-
-import { EvmFeeProxy } from "./";
 
 export const Main: FC = () => {
 	const [currentDemo] = useDemo();
