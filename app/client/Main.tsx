@@ -1,13 +1,13 @@
-"use client";
+import type { FC } from "react";
 
-import { EvmFeeProxy } from "./";
+import { EvmFeeProxy } from "@/libs/demos";
+import { useDemo } from "@/libs/hooks";
 
-export default function Main() {
-	return (
-		<div className="h-full ml-14 mt-14 mb-10 md:ml-64">
-			<div className="flex justify-center">
-				<EvmFeeProxy />
-			</div>
-		</div>
-	);
-}
+export const Main: FC = () => {
+	const [currentDemo] = useDemo();
+
+	switch (currentDemo) {
+		case "EvmFeeProxy":
+			return <EvmFeeProxy />;
+	}
+};

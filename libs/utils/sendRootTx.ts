@@ -1,4 +1,4 @@
-import type { Extrinsic } from "@/libs/types";
+import type { Extrinsic, Result } from "@/libs/types";
 
 import { RootTx } from "./";
 
@@ -10,7 +10,7 @@ export const sendRootTx = async (extrinsic: Extrinsic) => {
 			const { txHash } = result;
 			console.info("Transaction", txHash.toString());
 			tx.setHash(txHash.toString());
-			tx.setResult(result);
+			tx.setResult(result as Result);
 		})
 		.catch((error) => {
 			throw error;

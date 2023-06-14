@@ -2,11 +2,13 @@ import ERC20 from "@openzeppelin/contracts/build/contracts/ERC20.json";
 import { Contract, utils as ethers } from "ethers";
 import { type FC, useCallback, useEffect, useMemo, useState } from "react";
 
+import { Button, Input, JSONViewer } from "@/app/client";
+import { DemoWrapper } from "@/app/server";
 import { Assets, RootNetwork } from "@/libs/constants";
-import { useEvmFeeProxy, useMetaMask, useRootApi } from "@/libs/hooks";
+import { useMetaMask, useRootApi } from "@/libs/hooks";
 import { sendRootTx, signRootTx } from "@/libs/utils";
 
-import { Button, Input, JSONViewer } from "./";
+import { useEvmFeeProxy } from "./useEvmFeeProxy";
 
 interface EvmData {
 	input?: string;
@@ -60,7 +62,7 @@ export const EvmFeeProxy: FC = () => {
 
 				const feeProxyEvent = tx.findEvent(result, "feeProxy", "CallWithFeePreferences");
 				const {
-					data: [who, maxPayment, paymentAsset],
+					data: [who, paymentAsset, maxPayment],
 				} = feeProxyEvent?.toJSON() as { data: [string, number, string] };
 
 				const evmLogEvent = tx.findEvent(result, "evm", "Log");
@@ -73,7 +75,7 @@ export const EvmFeeProxy: FC = () => {
 					events: {
 						"FeeProxy.CallWithFeePreferences": {
 							who,
-							maxPayment,
+							maxPayment: BigInt(maxPayment).toString(),
 							paymentAsset,
 						},
 						"EVM.Log": log,
@@ -95,7 +97,7 @@ export const EvmFeeProxy: FC = () => {
 	}, [rootApi, evmFeeProxyExtrinsic, wallet]);
 
 	return (
-		<div className="space-y-6 py-10 w-1/2">
+		<DemoWrapper>
 			<div className="mx-auto">
 				<Input id="asset" label="Asset" value="SYLO" />
 
@@ -147,7 +149,7 @@ export const EvmFeeProxy: FC = () => {
 					</div>
 				</div>
 			)}
-		</div>
+		</DemoWrapper>
 	);
 };
 
